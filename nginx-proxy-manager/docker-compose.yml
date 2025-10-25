@@ -1,0 +1,27 @@
+services:
+  nginx-proxy-manager:
+    image: 'jc21/nginx-proxy-manager:latest'
+    container_name: nginx-proxy-manager
+    restart: unless-stopped
+    env_file:
+        - .env
+    ports:
+      - '80:80'
+      - '81:81' # Needs to be disabled after initial setup
+      - '443:443'
+    volumes:
+      - ${NGINX_PROXY_MANAGER_DATA_LOCATION}:/data
+      - ${NGINX_PROXY_MANAGER_SSL_CERT_LOCATION}:/etc/letsencrypt
+    networks:
+      - default
+      - services-network
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+
+networks:
+  default:
+    name: nginx-proxy-manager-network
+    driver: bridge
+  services-network:
+    external: true

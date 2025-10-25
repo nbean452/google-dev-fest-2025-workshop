@@ -1,0 +1,30 @@
+services:
+  code-server:
+    image: lscr.io/linuxserver/code-server:latest
+    container_name: code-server
+    environment:
+      - PUID=1000
+      - PGID=1000
+      # These are the defaults which you need to reconfigure yourself!!
+      - PASSWORD=password #optional
+      - HASHED_PASSWORD= #optional
+      - SUDO_PASSWORD=password #optional
+      - SUDO_PASSWORD_HASH= #optional
+      - DEFAULT_WORKSPACE=/config/workspace #optional
+      - PWA_APPNAME=code-server #optional
+    networks:
+      - default
+      - services-network
+    volumes:
+      - ${CODE_SERVER_CONFIG_DIR}:/config
+    # ports:
+    #   - 8443:8443
+    restart: unless-stopped
+
+
+networks:
+  default:
+    name: code-server-network
+    driver: bridge
+  services-network:
+    external: true
