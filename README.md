@@ -31,7 +31,7 @@ for pkg in docker.io docker-doc docker-compose podman-docker containerd runc; do
 
 # Add Docker's official GPG key:
 sudo apt-get update
-sudo apt-get install ca-certificates curl
+sudo apt-get install ca-certificates curl -y
 sudo install -m 0755 -d /etc/apt/keyrings
 sudo curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
 sudo chmod a+r /etc/apt/keyrings/docker.asc
@@ -43,7 +43,7 @@ echo \
   sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 sudo apt-get update
 
-sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
 
 # Give our user permission to run `docker` without sudo privileges
 sudo groupadd docker
@@ -76,7 +76,7 @@ To make it easier to manage our own apps, let's create `.env` files from the giv
 
 ## Run the applications
 
-Now that we have everything set up, we can now run our applications. For each subdirectory, run the following commands:
+Now that we have everything set up, we can now run our applications. For each subdirectory, run the following commands (except nginx-proxy-manager, which we will run last):
 
 ```sh
 cd <app-directory>
@@ -85,17 +85,13 @@ docker compose up -d
 
 ## Configure Nginx Proxy Manager
 
-Now from your actual PC, run the following command to forward the `nginx-proxy-manager` dashboard app to your machine:
-
-```sh
-ssh user@ip-address -L 4001:localhost:81 # forward cloud VM's port 81 to your machine's port 4001
-```
-
-Then access your machine there and start configuring the following the items:
+First thing, we need to do `docker compose up -d` in the `nginx-proxy-manager` subdirectory to start the NGINX Proxy Manager app. But here's the difference, first run, we're going to route port 81 within the docker into the host machine's port 80 (to access nginx proxy manager dashboard from browser). From there, we can set up the SSL certificates and proxy hosts.
 
 - Proxy hosts (helps NGINX understand which app to forward the incoming request to)
-- SSL Certificates (helps secure the connection between the user and the NGINX server)
+- SSL Certificates (helps secure the connection between the user and the NGINX server) using the Cloudflare API token (we're using Cloudflare for this demo)
+
+Once these are set up, we can now change back the port mapping to "80:80" and "443:443" in the `docker-compose.yml` file within the `nginx-proxy-manager` subdirectory and restart the container.
 
 # Conclusion
 
-You have reached the end of this README, meaning that you don't have to deal with the editor anymore, phew!
+You have reached the end of this README, meaning that you have successfully hosted your own open-source applications on a Compute Engine instance in Google Cloud Platform and served the apps via https using NGINX Proxy Manager. Congratulations!
