@@ -10,8 +10,8 @@ services:
       # - '80:81' # Needs to be disabled after initial setup
       - '443:443'
     volumes:
-      - ${NGINX_PROXY_MANAGER_DATA_LOCATION}:/data
-      - ${NGINX_PROXY_MANAGER_SSL_CERT_LOCATION}:/etc/letsencrypt
+      - ${NGINX_PROXY_MANAGER_DATA_DIR}:/data
+      - ${NGINX_PROXY_MANAGER_SSL_CERT_DIR}:/etc/letsencrypt
     networks:
       - default
       - services-network
