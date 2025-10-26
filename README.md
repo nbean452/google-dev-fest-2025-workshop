@@ -13,11 +13,20 @@ Note: If you are experienced, some of these steps are interchangeable if you wan
 
 So, what are the next steps?
 
+- [Git Clone this repository](#git-clone-this-repository)
 - [Docker Installation](#docker-installation)
 - [Setup Docker Network](#setup-docker-network)
 - [Setup the env files](#setup-the-env-files)
 - [Run the applications](#run-the-applications)
 - [Configure Nginx Proxy Manager](#configure-nginx-proxy-manager)
+
+## Git Clone this repository
+
+First, we need to clone this repository into our Compute Engine instance. So SSH into your Compute Engine instance and run the following command:
+
+```sh
+sudo apt install git -y && git clone https://github.com/nbean452/google-dev-fest-2025-workshop.git
+```
 
 ## Docker Installation
 
